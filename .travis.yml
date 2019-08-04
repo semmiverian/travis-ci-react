@@ -1,0 +1,20 @@
+# Bahasa yang digunakan oleh aplikasi kita
+# Node JS digunakan untuk menjalankan javascript di dalam server
+language: node_js
+# Versi Node JS yang akan di install oleh sistem travis-ci
+# Pada saat pembuatan gist ini versi 10 lah versi yang paling stabil
+node_js:
+  - '10'
+# Cache digunakan untuk menyimpan data yang sudah di build sebelumnya
+# Jika tidak ada perubahan
+# Dengan memasukan cache seperti ini
+# Kita tidak akan menginstal dependensi aplikasi
+# setiap kali melakukan push jika tidak ada perubahan yang terjadi
+cache:
+  yarn: true
+  directories:
+    - node_modules
+# script ini yang akan dijalankan oleh travis-ci
+# yang menentukan apakah code kita sudah pass test atau belum
+script:
+  - yarn test
