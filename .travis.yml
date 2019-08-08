@@ -18,3 +18,23 @@ cache:
 # yang menentukan apakah code kita sudah pass test atau belum
 script:
   - yarn test
+# Syntax yang akan dijalnkan sebelum melakukan deployment
+before_deploy:
+  - yarn run build
+# Konfigurasi yang akan digunakan travis Ci untuk menjalankan deployment
+deploy:
+  provider: s3 # Provider deployment yang akan kita gunakan
+  access_key_id: $AWS_ACCESS_KEY_ID # Access key id yang digunakan travis CI untuk authentikasi ke aws
+  secret_access_key: $AWS_SECRET_ACCESS_KEY # Access Secret access key yang digunakan travis CI untuk authentikasi ke aws
+  bucket: $S3_BUCKET # Nama bucket tujuan kita
+  # Mencegah travis untuk tidak melakukan reset directory kita (git stash)
+  # Hal ini dibutuhkan karena kita akan membuat folder baru yaitu build dan syntax ini mencegah agar
+  # folder tersebut tidak dihapus oleh system travis ci
+  skip_cleanup: true
+  # Memberi tahu travis untuk mengupload folder build saja
+  local-dir: build
+  # Region tempat bucket kita dibuat
+  region: 'ap-southeast-1'
+  # Process deploy hanya akan dijalankan ketika ada merge baru ke branch master
+  on:
+    branch: master
